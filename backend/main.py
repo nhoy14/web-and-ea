@@ -15,9 +15,15 @@ from pydantic import BaseModel, EmailStr
 # --- DATABASE CONFIGURATION ---
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
-    # Check if running on Vercel to use /tmp for sqlite
+    # Check if running on Vercel or Render
     if os.environ.get("VERCEL"):
         DATABASE_URL = "sqlite:////tmp/licensing.db"
+    elif os.environ.get("RENDER"):
+        # If Render persistent disk is mounted at /var/data, use it
+        if os.path.exists("/var/data"):
+            DATABASE_URL = "sqlite:////var/data/licensing.db"
+        else:
+            DATABASE_URL = "sqlite:////tmp/licensing.db"
     else:
         DATABASE_DIR = os.path.dirname(os.path.abspath(__file__))
         DATABASE_URL = f"sqlite:///{os.path.join(DATABASE_DIR, 'licensing.db')}"
