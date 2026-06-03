@@ -64,7 +64,7 @@ export default function Dashboard({
   const [bots, setBots] = useState([]);
   const fetchBots = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/bots');
+      const response = await fetch('/api/bots');
       if (response.ok) {
         const data = await response.json();
         setBots(data);
@@ -83,7 +83,7 @@ export default function Dashboard({
     if (!token) return;
     setIsLoadingLicenses(true);
     try {
-      const response = await fetch('http://localhost:8000/api/licenses/me', {
+      const response = await fetch('/api/licenses/me', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -125,7 +125,7 @@ export default function Dashboard({
     const expiryMonths = isYearly ? 12 : 1;
 
     try {
-      const response = await fetch('http://localhost:8000/api/licenses/generate', {
+      const response = await fetch('/api/licenses/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ export default function Dashboard({
     if (!token) return;
     setIsGenerating(true);
     try {
-      const response = await fetch('http://localhost:8000/api/licenses/generate', {
+      const response = await fetch('/api/licenses/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

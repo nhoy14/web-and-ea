@@ -13,13 +13,26 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 
 # --- DATABASE CONFIGURATION ---
-DATABASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE_URL = f"sqlite:///{os.path.join(DATABASE_DIR, 'licensing.db')}"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    # Check if running on Vercel to use /tmp for sqlite
+    if os.environ.get("VERCEL"):
+        DATABASE_URL = "sqlite:////tmp/licensing.db"
+    else:
+        DATABASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        DATABASE_URL = f"sqlite:///{os.path.join(DATABASE_DIR, 'licensing.db')}"
+else:
+    # SQLAlchemy 2.0 requires postgresql:// instead of postgres://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 # Create SQLite engine
-engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+else:
+    engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

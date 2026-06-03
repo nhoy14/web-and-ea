@@ -41,7 +41,7 @@ function App() {
 
     const fetchMt5Data = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/licenses/me', {
+        const response = await fetch('/api/licenses/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

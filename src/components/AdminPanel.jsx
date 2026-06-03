@@ -44,7 +44,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   const fetchUsers = async () => {
     if (!token) return;
     try {
-      const response = await fetch('http://localhost:8000/api/admin/users', {
+      const response = await fetch('/api/admin/users', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,7 +64,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   const fetchLicenses = async () => {
     if (!token) return;
     try {
-      const response = await fetch('http://localhost:8000/api/admin/licenses', {
+      const response = await fetch('/api/admin/licenses', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -93,7 +93,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   // Fetch all bots
   const fetchBots = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/bots');
+      const response = await fetch('/api/bots');
       if (response.ok) {
         const data = await response.json();
         setBots(data);
@@ -125,7 +125,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   // Toggle active status
   const handleToggleActive = async (licenseId) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/licenses/${licenseId}/toggle`, {
+      const response = await fetch(`/api/admin/licenses/${licenseId}/toggle`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -162,7 +162,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8000/api/admin/licenses/generate', {
+      const response = await fetch('/api/admin/licenses/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
     e.preventDefault();
     if (!targetLicense) return;
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/licenses/${targetLicense.id}/extend`, {
+      const response = await fetch(`/api/admin/licenses/${targetLicense.id}/extend`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   const handleDeleteLicenseSubmit = async () => {
     if (!targetLicense) return;
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/licenses/${targetLicense.id}`, {
+      const response = await fetch(`/api/admin/licenses/${targetLicense.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -249,7 +249,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
   const handleAddBotSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/admin/bots', {
+      const response = await fetch('/api/admin/bots', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ export default function AdminPanel({ onNavigate, token, userEmail, onLogout }) {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/bots/${botId}`, {
+      const response = await fetch(`/api/admin/bots/${botId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
